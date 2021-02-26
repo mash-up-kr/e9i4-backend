@@ -1,4 +1,4 @@
-# e9i4-backend
+# e9i4-backend 🦎
 
 > Backend repository for team e9i4
 
