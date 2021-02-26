@@ -1,11 +1,9 @@
 // /api/v1 라우팅
 import express, {Router} from 'express';
-import postRouter from './post.router';
-import commentRouter from './comment.router';
+import userRouter from './user.router';
 
 const router: Router = express.Router();
 
-router.use('/post', postRouter);
-router.use('/post', commentRouter);
+router.use('/user', userRouter);
 
 export default router;
