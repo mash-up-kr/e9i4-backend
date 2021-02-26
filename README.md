@@ -1,6 +1,6 @@
-# Boilerplate_TypeScript_MySQL
+# e9i4-backend
 
-> Boiler project with TypeScript and MySQL
+> Backend repository for team e9i4
 
 
 
