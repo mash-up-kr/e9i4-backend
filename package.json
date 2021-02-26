@@ -1,7 +1,14 @@
 {
-  "name": "boilerplate_ts_mysql",
+  "name": "e9i4-backend",
   "version": "1.0.0",
-  "description": "boilerplate project with a TypeScript & MySQL",
+  "description": "Backend repository for team e9i4",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mash-up-kr/e9i4-backend.git"
+  },
+  "keywords": [],
+  "author": "team e9i4",
+  "license": "ISC",
   "scripts": {
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
@@ -14,9 +21,6 @@
     "pretest": "npm run compile",
     "posttest": "npm run lint"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.9",
@@ -45,7 +49,6 @@
     "@typescript-eslint/parser": "^4.11.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.16.0",
-    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.0",
