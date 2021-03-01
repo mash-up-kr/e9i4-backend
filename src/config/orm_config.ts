@@ -9,7 +9,7 @@ const connectionOptions: ConnectionOptions = {
   database: 'test',
   synchronize: true,
   logging: true,
-  entities: ['src/entities/**/*.ts'],
+  entities: ['dist/entities/**/*.ts'],
 };
 
 export default connectionOptions;
