@@ -1,0 +1,26 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/deploy/i9i4
+    overwrite: true
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+
+hooks:
+  AfterInstall:
+    - location: scripts/install_dependencies.sh
+      timeout: 120
+      runas: ubuntu
+  ApplicationStart:
+    - location: scripts/restart_server.sh
+      timeout: 180
+      runas: ubuntu
+  ValidateService:
+    - location: scripts/validate_server.sh
+      timeout: 30
+      runas: ubuntu
