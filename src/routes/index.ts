@@ -5,7 +5,7 @@ const router: Router = express.Router();
 
 router.use('/api/v1', apiV1Router);
 router.get('/', (req: Request, res: Response) => {
-  res.send('OK');
+  res.send('OK!');
 });
 
 export default router;
