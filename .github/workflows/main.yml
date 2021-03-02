@@ -39,7 +39,7 @@ jobs:
         run: rm -rf ./node_modules
 
       - name: Make zip file
-        run: zip -qq -r ./$GIHUB_SHA.zip .
+        run: zip -r ./$GIHUB_SHA.zip .
         shell: bash
 
       - name: Configure AWS credentials
