@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/deploy/i9i4
+    destination: /home/ubuntu/deploy/i9e4
     overwrite: true
 
 permissions:
