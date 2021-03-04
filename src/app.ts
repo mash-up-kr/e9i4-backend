@@ -8,6 +8,9 @@ import logger from 'morgan';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import {normalize} from 'path';
+import passport from 'passport';
+
+import {initPassport} from './initAuth';
 
 //use env_values
 dotenv.config();
@@ -28,6 +31,11 @@ createConnection(connectionOptions).then(connection => {
 
   // Express variables
   app.set('port', normalize(process.env.PORT || '3000'));
+
+  // Passport
+  initPassport();
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   // Routing
   app.use(router);
