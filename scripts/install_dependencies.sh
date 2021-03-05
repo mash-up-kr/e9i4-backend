@@ -3,6 +3,6 @@ echo '============================'
 echo 'Running install_dependencies'
 echo '============================'
 
-cd /home/ubuntu/deploy/i9e4
+cd /home/ubuntu/deploy/e9i4
 source /home/ubuntu/.bashrc
 npm install
