@@ -1,3 +1,4 @@
+#!/bin/bash
 echo '======================='
 echo 'Running validate_server'
 echo '======================='
