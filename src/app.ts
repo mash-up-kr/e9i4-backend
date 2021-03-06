@@ -37,4 +37,4 @@ createConnection(connectionOptions).then(connection => {
       )} mode!!!`
     );
   });
-});
+}); //
