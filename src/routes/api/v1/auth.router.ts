@@ -1,16 +1,24 @@
-import express, {Router} from 'express';
+import express, {Router, Request} from 'express';
 import passport from 'passport';
+import {Profile} from 'passport-apple';
+
+interface IRequest extends Request {
+  profile?: Profile;
+}
 
 const router: Router = express.Router();
 
-router.get('/signin', passport.authenticate('apple')); // GET /api/v1/auth/signin
+// GET /api/v1/auth/signin
+router.get('/signin', passport.authenticate('apple'));
 
-router.post('/callback', (req, res, next) => {
-  passport.authenticate('apple', (err, profile) => {
-    // req.profile = profile;
+// POST /api/v1/auth/callback
+router.post('/callback', (req: IRequest, res, next) => {
+  passport.authenticate('apple', (err, profile: Profile) => {
+    req.profile = profile;
     console.log(profile);
     next();
   })(req, res, next);
+  return res.json(req.profile);
 });
 
 export default router;
