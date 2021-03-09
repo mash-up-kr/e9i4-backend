@@ -31,20 +31,21 @@ export class User extends BaseEntity {
   @Column({
     type: 'enum',
     enum: PlatformType,
-    default: PlatformType.guest
+    default: PlatformType.guest,
+    select: false
   })
   platformType: PlatformType;
 
-  @Column({unique: true, nullable: true})
+  @Column({unique: true, nullable: true, select: false})
   email: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({select: false})
   public createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({select: false})
   public updatedAt: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({select: false})
   public deletedAt: Date;
 
   @OneToMany(type => AlarmScrap, alarmScrap => alarmScrap.alarm)
