@@ -2,10 +2,12 @@
 import express, {Router} from 'express';
 import userRouter from './user.router';
 import categoryRouter from './category.router';
+import alarmRouter from './alarm.router';
 
 const router: Router = express.Router();
 
 router.use('/user', userRouter);
 router.use('/category', categoryRouter);
+router.use('/alarms', alarmRouter);
 
 export default router;
