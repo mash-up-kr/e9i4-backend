@@ -1,11 +1,6 @@
 import passport from 'passport';
 import AppleStrategy from 'passport-apple';
-
-type ContextUser = {
-  id: string;
-  name: string;
-  email: string;
-};
+import path from 'path';
 
 export function initPassport() {
   passport.serializeUser((user, cb) => {
@@ -22,8 +17,10 @@ export function initPassport() {
         clientID: 'kr.co.mashup.e9i4.Rrrr.authentication',
         teamID: 'CHL8Y83Z89',
         keyID: '2HZYGS7RSJ',
-        callbackURL: 'http://localhost:3000/api/v1/auth/callback',
-        // privateKeyLocation: '../config/AuthKey.p8',
+        callbackURL: `${
+          process.env.ROOT_URL ?? 'http://localhost:3000'
+        }/api/v1/auth/callback`,
+        privateKeyLocation: path.join(__dirname, './config/AuthKey.p8'),
         passReqToCallback: true,
       },
       (req, accessToken, refreshToken, decodedIdToken, profile, cb) => {
