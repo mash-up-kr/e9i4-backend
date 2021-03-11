@@ -1,3 +1,4 @@
+require('dotenv').config({path: __dirname + '/../.env'});
 import router from './routes';
 import connectionOptions from './config/orm_config';
 import express, {Application, Request, Response, NextFunction} from 'express';
@@ -6,14 +7,10 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import {normalize} from 'path';
 import passport from 'passport';
 
 import {initPassport} from './initAuth';
-
-//use env_values
-dotenv.config();
 
 createConnection(connectionOptions).then(connection => {
   const app: Application = express();
