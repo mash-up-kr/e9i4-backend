@@ -1,5 +1,11 @@
-import {Entity, Column, BaseEntity, PrimaryGeneratedColumn} from 'typeorm';
-
+import {
+  Entity,
+  Column,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from 'typeorm';
+import {AlarmCategory} from './alarmCategory.entity';
 @Entity()
 export class Category extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -7,4 +13,7 @@ export class Category extends BaseEntity {
 
   @Column()
   name: string;
+
+  @OneToMany(type => AlarmCategory, alarmCategory => alarmCategory)
+  alarmCategories: AlarmCategory[];
 }

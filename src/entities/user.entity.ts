@@ -1,3 +1,7 @@
+import {AlarmScrap} from './alarmScrap.entity';
+import {Alarm} from './alarm.entity';
+import {AlarmLike} from './alarmLike.entity';
+import {AlarmState} from './alarmState.entity';
 import {
   Entity,
   Column,
@@ -6,6 +10,9 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 export enum PlatformType {
@@ -25,18 +32,32 @@ export class User extends BaseEntity {
     type: 'enum',
     enum: PlatformType,
     default: PlatformType.guest,
+    select: false,
   })
   platformType: PlatformType;
 
-  @Column({unique: true, nullable: true})
+  @Column({unique: true, nullable: true, select: false})
   email: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({select: false})
   public createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({select: false})
   public updatedAt: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({select: false})
   public deletedAt: Date;
+
+  @OneToMany(type => AlarmScrap, alarmScrap => alarmScrap.alarm)
+  alarmScraps: AlarmScrap[];
+
+  @OneToMany(type => Alarm, alarm => alarm.user)
+  alarms: Alarm[];
+
+  @OneToMany(type => AlarmLike, alarmLike => alarmLike.alarm)
+  alarmLikes: AlarmLike[];
+
+  @ManyToMany(() => AlarmState)
+  @JoinTable()
+  alarmStates: AlarmState[];
 }
