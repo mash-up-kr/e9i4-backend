@@ -14,7 +14,7 @@ export async function getMyAlarms(userId: number) {
   });
   const myAlarms: Alarm[] = await Alarm.find({
     where: {userId: user},
-    relations: ['user', 'categories', 'alarmStates'],
+    relations: ['user', 'categories', 'alarmState'],
   });
   return myAlarms;
 }
