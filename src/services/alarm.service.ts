@@ -77,3 +77,30 @@ export async function getIndividualAlarm(alarmId: number) {
   });
   return alarm;
 }
+
+export async function updateAlarm(
+  id: number,
+  title: string,
+  cronData: string,
+  description: string,
+  isActive: boolean,
+  isHidden: boolean,
+  alarmType: any
+) {
+  const alarm: Alarm = await Alarm.findOne({
+    where: {id: id},
+    relations: ['user', 'categories'],
+  });
+  const alarmState: AlarmState = await AlarmState.findOne({
+    where: {alarmId: id},
+  });
+  alarm.title = title;
+  alarm.cronData = cronData;
+  alarm.description = description;
+  alarmState.isActive = isActive;
+  alarmState.isHidden = isHidden;
+  alarmState.alarmType = alarmType;
+  await alarm.save();
+  await alarmState.save();
+  return alarm;
+}

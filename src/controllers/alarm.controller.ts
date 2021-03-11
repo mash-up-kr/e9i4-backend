@@ -77,3 +77,37 @@ export async function getIndividualAlarm(
     res.status(500).send(`Error while get individualAlarm (${err.message})`);
   }
 }
+
+export async function updateAlarm(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const id = Number(req.params.alarmId);
+    if (!id) {
+      throw Error('Invalid params');
+    }
+    const title: string = req.body.title;
+    const cronData: string = req.body.cronData;
+    const description: string = req.body.description;
+    const isActive: boolean = req.body.alarmState.isActive;
+    const isHidden: boolean = req.body.alarmState.isHidden;
+    const alarmType: 'enum' = req.body.alarmState.alarmType;
+    if (!cronData && !description && !isActive) {
+      throw Error('Invalid body');
+    }
+    const alarm = await alarmService.updateAlarm(
+      id,
+      title,
+      cronData,
+      description,
+      isActive,
+      isHidden,
+      alarmType
+    );
+    res.status(200).json({data: alarm});
+  } catch (err) {
+    res.status(500).send(`Error while update alarm (${err.message})`);
+  }
+}
