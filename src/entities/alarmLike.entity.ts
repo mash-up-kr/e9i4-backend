@@ -2,7 +2,6 @@ import {Alarm} from './alarm.entity';
 import {User} from './user.entity';
 import {
   Entity,
-  Column,
   PrimaryGeneratedColumn,
   ManyToOne,
   BaseEntity,

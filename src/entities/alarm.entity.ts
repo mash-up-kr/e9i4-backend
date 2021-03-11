@@ -59,7 +59,7 @@ export class Alarm extends BaseEntity {
 
   @ManyToOne(type => User, user => user.alarms)
   user: User;
-  
+
   @JoinTable()
   users: User[];
 
@@ -68,5 +68,5 @@ export class Alarm extends BaseEntity {
   categories: Category[];
 
   @OneToOne(() => AlarmState, alarmState => alarmState.alarm)
-  alarmState: AlarmState
+  alarmState: AlarmState;
 }

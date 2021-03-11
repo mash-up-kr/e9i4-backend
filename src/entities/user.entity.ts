@@ -32,7 +32,7 @@ export class User extends BaseEntity {
     type: 'enum',
     enum: PlatformType,
     default: PlatformType.guest,
-    select: false
+    select: false,
   })
   platformType: PlatformType;
 
