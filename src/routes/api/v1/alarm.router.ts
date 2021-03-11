@@ -6,5 +6,7 @@ const router: Router = express.Router();
 router.get('/', alarmController.getAlarm);
 router.get('/my', alarmController.getMyAlarm);
 router.get('/:alarmId', alarmController.getIndividualAlarm);
+router.put('/:alarmId', alarmController.updateAlarm);
+router.post('/', alarmController.addAlarm);
 
 export default router;
