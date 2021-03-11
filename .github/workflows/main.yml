@@ -2,7 +2,7 @@
 
 name: CI
 
-# Controls when the action will run.
+# Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
@@ -16,11 +16,11 @@ jobs:
   deploy:
     name: Build & deploy to S3 bucket
     runs-on: [ubuntu-latest]
-
+    
     strategy:
       matrix:
         node-version: [12.18.x]
-
+        
     steps:
       - uses: actions/checkout@v2
 

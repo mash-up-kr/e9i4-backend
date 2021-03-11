@@ -8,6 +8,9 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
 import {normalize} from 'path';
+import passport from 'passport';
+
+import {initPassport} from './initAuth';
 
 createConnection(connectionOptions).then(connection => {
   const app: Application = express();
@@ -26,6 +29,11 @@ createConnection(connectionOptions).then(connection => {
   // Express variables
   app.set('port', normalize(process.env.PORT || '3000'));
 
+  // Passport
+  initPassport();
+  app.use(passport.initialize());
+  app.use(passport.session());
+
   // Routing
   app.use(router);
 
@@ -37,4 +45,4 @@ createConnection(connectionOptions).then(connection => {
       )} mode!!!`
     );
   });
-});
+}); //
