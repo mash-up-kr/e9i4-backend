@@ -3,8 +3,9 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne,
   BaseEntity,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 
 export enum AlarmType {
@@ -24,9 +25,9 @@ export class AlarmState extends BaseEntity {
   @Column({default: false})
   isHidden: boolean;
 
-  @Column({select: false})
+  @Column({nullable: true, select: false})
   alarmId: number;
-
+  
   @Column({
     type: 'enum',
     enum: AlarmType,
@@ -34,6 +35,7 @@ export class AlarmState extends BaseEntity {
   })
   alarmType = AlarmType;
 
-  @ManyToOne(type => Alarm, alarm => alarm.alarmStates)
+  @OneToOne(type => Alarm)
+  @JoinColumn()
   alarm: Alarm;
 }

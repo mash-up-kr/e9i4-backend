@@ -13,6 +13,7 @@ import {
   ManyToOne,
   JoinTable,
   ManyToMany,
+  OneToOne,
 } from 'typeorm';
 
 @Entity()
@@ -50,9 +51,6 @@ export class Alarm extends BaseEntity {
   @OneToMany(type => AlarmScrap, alarmScrap => alarmScrap.alarm)
   alarmScraps: AlarmScrap[];
 
-  @OneToMany(type => AlarmState, alarmState => alarmState.alarm)
-  alarmStates: AlarmState[];
-
   @OneToMany(type => AlarmCategory, alarmCategory => alarmCategory.alarm)
   alarmCategories: AlarmCategory[];
 
@@ -61,11 +59,14 @@ export class Alarm extends BaseEntity {
 
   @ManyToOne(type => User, user => user.alarms)
   user: User;
-
+  
   @JoinTable()
   users: User[];
 
   @ManyToMany(() => Category)
   @JoinTable()
   categories: Category[];
+
+  @OneToOne(() => AlarmState, alarmState => alarmState.alarm)
+  alarmState: AlarmState
 }
