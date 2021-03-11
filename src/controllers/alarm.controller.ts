@@ -1,6 +1,36 @@
 import {Request, Response, NextFunction} from 'express';
 import * as alarmService from '../services/alarm.service';
 
+export async function addAlarm(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const cronData: string = req.body.alarm.cronData;
+    const title: string = req.body.alarm.title;
+    const description: string = req.body.alarm.description;
+    const isActive: boolean = req.body.alarm.alarmState.isActive;
+    const isHidden: boolean = req.body.alarm.alarmState.isHidden;
+    const alarmType: 'enum' = req.body.alarm.alarmState.alarmType;
+    const id = Number(req.headers.id);
+    const categoryIds: number[] = req.body.categoryIds || [];
+    const alarm = await alarmService.addAlarm(
+      cronData,
+      title,
+      description,
+      isActive,
+      isHidden,
+      alarmType,
+      id,
+      categoryIds
+    );
+    res.status(200).json({data: alarm});
+  } catch (err) {
+    res.status(500).send(`Error while add alarm (${err.message})`);
+  }
+}
+
 export async function getAlarm(
   req: Request,
   res: Response,

@@ -1,5 +1,56 @@
 import {Alarm} from '../entities/alarm.entity';
+import {AlarmState} from '../entities/alarmState.entity';
+import {Category} from '../entities/category.entity';
 import {User} from '../entities/user.entity';
+
+export async function addAlarm(
+  cronData: string,
+  title: string,
+  description: string,
+  isActive: boolean,
+  isHidden: boolean,
+  alarmType: any,
+  id: number,
+  categoryIds: number[]
+) {
+  const alarm: Alarm = new Alarm();
+  alarm.cronData = cronData;
+  alarm.title = title;
+  alarm.description = description;
+  alarm.userId = id;
+  await alarm.save();
+  const alarmState: AlarmState = new AlarmState();
+  alarmState.alarm = alarm;
+  alarmState.isActive = isActive;
+  alarmState.isHidden = isHidden;
+  alarmState.alarmType = alarmType;
+  await alarmState.save();
+
+  const categoryEntities: Category[] = [];
+  for (const category of categoryIds) {
+    let categoryEntity: Category = await Category.findOne({
+      where: {
+        id: category,
+      },
+    });
+    if (!categoryEntity) {
+      categoryEntity = new Category();
+      categoryEntity.id = category;
+      await categoryEntity.save();
+    }
+    categoryEntities.push(categoryEntity);
+  }
+  alarm.categories = categoryEntities;
+  await alarm.save();
+
+  const alarmInfo: Alarm = await Alarm.findOne({
+    where: {
+      id: alarm.id,
+    },
+    relations: ['user', 'categories', 'alarmState'],
+  });
+  return alarmInfo;
+}
 
 export async function getAlarms() {
   const alarms: Alarm[] = await Alarm.find({
