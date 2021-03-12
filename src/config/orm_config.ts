@@ -9,7 +9,7 @@ const connectionOptions: ConnectionOptions = {
   database: process.env.DB_DATABASE || 'test',
   synchronize: true,
   logging: true,
-  entities: ['dist/entities/**/*.ts'],
+  entities: ['dist/entities/**/*.js'],
 };
 
 export default connectionOptions;
