@@ -104,3 +104,11 @@ export async function updateAlarm(
   await alarmState.save();
   return alarm;
 }
+
+export async function deleteAlarm(id: number) {
+  const alarm: Alarm = await Alarm.findOne({
+    where: {id: id},
+  });
+  await alarm.remove();
+  return id;
+}

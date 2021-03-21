@@ -111,3 +111,20 @@ export async function updateAlarm(
     res.status(500).send(`Error while update alarm (${err.message})`);
   }
 }
+
+export async function deleteAlarm(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const id = Number(req.params.alarmId);
+    if (!id) {
+      throw Error('Invalid params');
+    }
+    const alarm = await alarmService.deleteAlarm(id);
+    res.status(200).json({deleteAlarmId: alarm});
+  } catch (err) {
+    res.status(500).send(`Error while delete alarm (${err.message})`);
+  }
+}
