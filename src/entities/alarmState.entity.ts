@@ -27,7 +27,7 @@ export class AlarmState extends BaseEntity {
 
   @Column({nullable: true, select: false})
   alarmId: number;
-  
+
   @Column({
     type: 'enum',
     enum: AlarmType,
