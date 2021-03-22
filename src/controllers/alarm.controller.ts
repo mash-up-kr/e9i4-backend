@@ -72,6 +72,9 @@ export async function getIndividualAlarm(
       throw Error('Invalid params');
     }
     const individualAlarm = await alarmService.getIndividualAlarm(alarmId);
+    if (!individualAlarm) {
+      throw Error('There is no alarm');
+    }
     res.status(200).json({data: individualAlarm});
   } catch (err) {
     res.status(500).send(`Error while get individualAlarm (${err.message})`);
