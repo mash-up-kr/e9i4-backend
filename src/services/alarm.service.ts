@@ -28,15 +28,13 @@ export async function addAlarm(
 
   const categoryEntities: Category[] = [];
   for (const category of categoryIds) {
-    let categoryEntity: Category = await Category.findOne({
+    const categoryEntity: Category = await Category.findOne({
       where: {
         id: category,
       },
     });
     if (!categoryEntity) {
-      categoryEntity = new Category();
-      categoryEntity.id = category;
-      await categoryEntity.save();
+      throw Error('Category does not exist');
     }
     categoryEntities.push(categoryEntity);
   }
