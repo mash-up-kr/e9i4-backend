@@ -1,11 +1,7 @@
-import {Request, Response, NextFunction} from 'express';
+import {Request, Response} from 'express';
 import * as alarmService from '../services/alarm.service';
 
-export async function addAlarm(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function addAlarm(req: Request, res: Response) {
   try {
     const cronData: string = req.body.alarm.cronData;
     const title: string = req.body.alarm.title;
@@ -31,11 +27,7 @@ export async function addAlarm(
   }
 }
 
-export async function getAlarm(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function getAlarm(req: Request, res: Response) {
   try {
     const alarms = await alarmService.getAlarms();
     res.status(200).json({data: alarms});
@@ -44,11 +36,7 @@ export async function getAlarm(
   }
 }
 
-export async function getMyAlarm(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function getMyAlarm(req: Request, res: Response) {
   try {
     const userId = Number(req.headers.id);
     if (!userId) {
@@ -61,11 +49,7 @@ export async function getMyAlarm(
   }
 }
 
-export async function getIndividualAlarm(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function getIndividualAlarm(req: Request, res: Response) {
   try {
     const alarmId = Number(req.params.alarmId);
     if (!alarmId) {
@@ -81,11 +65,7 @@ export async function getIndividualAlarm(
   }
 }
 
-export async function updateAlarm(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function updateAlarm(req: Request, res: Response) {
   try {
     const id = Number(req.params.alarmId);
     if (!id) {
@@ -115,11 +95,7 @@ export async function updateAlarm(
   }
 }
 
-export async function deleteAlarm(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function deleteAlarm(req: Request, res: Response) {
   try {
     const id = Number(req.params.alarmId);
     if (!id) {
