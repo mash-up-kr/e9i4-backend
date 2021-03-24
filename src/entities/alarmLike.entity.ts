@@ -1,11 +1,6 @@
 import {Alarm} from './alarm.entity';
 import {User} from './user.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  BaseEntity,
-} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, ManyToOne, BaseEntity} from 'typeorm';
 
 @Entity()
 export class AlarmLike extends BaseEntity {
