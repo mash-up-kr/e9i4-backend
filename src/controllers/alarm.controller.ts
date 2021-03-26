@@ -51,7 +51,7 @@ export async function getAlarm(req: Request, res: Response) {
 
 export async function getMyAlarm(req: Request, res: Response) {
   try {
-    const userId = Number(req.headers.id);
+    const userId = Number(req.user['id']);
     if (!userId) {
       throw Error('Invalid headers');
     }

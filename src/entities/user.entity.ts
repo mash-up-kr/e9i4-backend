@@ -22,8 +22,11 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({nullable: true})
+  @Column({unique: true, nullable: true})
   nickname: string;
+
+  @Column({unique: true})
+  sub: string;
 
   @Column({
     type: 'enum',
