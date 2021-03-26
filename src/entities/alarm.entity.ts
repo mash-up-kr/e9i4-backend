@@ -25,9 +25,6 @@ export class Alarm extends BaseEntity {
   title: string;
 
   @Column()
-  cronData: string;
-
-  @Column()
   description: string;
 
   @Column({default: 'iguana.ga/alarm/:key'})

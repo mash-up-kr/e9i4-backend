@@ -3,8 +3,8 @@ import * as alarmService from '../services/alarm.service';
 
 export async function addAlarm(req: Request, res: Response) {
   try {
-    const cronData: string = req.body.alarm.cronData;
     const title: string = req.body.alarm.title;
+
     const description: string = req.body.alarm.description;
     const isActive: boolean = req.body.alarm.alarmState.isActive;
     const isHidden: boolean = req.body.alarm.alarmState.isHidden;
@@ -12,8 +12,8 @@ export async function addAlarm(req: Request, res: Response) {
     const id = Number(req.headers.id);
     const categoryIds: number[] = req.body.categoryIds || [];
     const alarm = await alarmService.addAlarm(
-      cronData,
       title,
+
       description,
       isActive,
       isHidden,
@@ -72,18 +72,16 @@ export async function updateAlarm(req: Request, res: Response) {
       throw Error('Invalid params');
     }
     const title: string = req.body.title;
-    const cronData: string = req.body.cronData;
     const description: string = req.body.description;
     const isActive: boolean = req.body.alarmState.isActive;
     const isHidden: boolean = req.body.alarmState.isHidden;
     const alarmType: 'enum' = req.body.alarmState.alarmType;
-    if (!cronData && !description && !isActive) {
+    if (!description && !isActive && !isHidden && !alarmType) {
       throw Error('Invalid body');
     }
     const alarm = await alarmService.updateAlarm(
       id,
       title,
-      cronData,
       description,
       isActive,
       isHidden,
