@@ -3,8 +3,8 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
-  JoinTable,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import {Alarm} from './alarm.entity';
 
@@ -34,9 +34,7 @@ export class CalenderCondition extends BaseEntity {
   @Column({nullable: true, select: false})
   alarmId: bigint;
 
-  @ManyToOne(() => Alarm, alarm => alarm.calenderConditions)
-  alarm: Alarm[];
-
-  @JoinTable()
-  alarms: Alarm[];
+  @OneToOne(() => Alarm)
+  @JoinColumn()
+  alarm: Alarm;
 }
