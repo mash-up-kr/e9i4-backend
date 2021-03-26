@@ -2,9 +2,18 @@ import {Alarm} from '../entities/alarm.entity';
 import {AlarmState} from '../entities/alarmState.entity';
 import {Category} from '../entities/category.entity';
 import {User} from '../entities/user.entity';
+import {CalenderCondition} from '../entities/calenderCondition.entity';
+import {DayOfWeek} from '../entities/dayOfWeek.entity';
 
 export async function addAlarm(
   title: string,
+  year: number,
+  month: number,
+  dayOfMonth: number,
+  dayOfWeek: number[],
+  hour: number,
+  minute: number,
+  second: number,
   description: string,
   isActive: boolean,
   isHidden: boolean,
@@ -23,6 +32,26 @@ export async function addAlarm(
   alarmState.isHidden = isHidden;
   alarmState.alarmType = alarmType;
   await alarmState.save();
+  const calenderCondition: CalenderCondition = new CalenderCondition();
+  calenderCondition.alarmId = alarm.id;
+  calenderCondition.year = year;
+  calenderCondition.month = month;
+  calenderCondition.dayOfMonth = dayOfMonth;
+  calenderCondition.hour = hour;
+  calenderCondition.minute = minute;
+  calenderCondition.second = second;
+  await calenderCondition.save();
+
+  const dayOfWeekEntities: DayOfWeek[] = [];
+  for (const week of dayOfWeek) {
+    const dayOfWeekEntity: DayOfWeek = new DayOfWeek();
+    dayOfWeekEntity.dayOfWeek = week;
+    dayOfWeekEntity.alarm = alarm;
+    await dayOfWeekEntity.save();
+    dayOfWeekEntities.push(dayOfWeekEntity);
+  }
+  alarm.dayOfWeeks = dayOfWeekEntities;
+  await calenderCondition.save();
 
   const categoryEntities: Category[] = [];
   for (const category of categoryIds) {
@@ -43,7 +72,13 @@ export async function addAlarm(
     where: {
       id: alarm.id,
     },
-    relations: ['user', 'categories', 'alarmState'],
+    relations: [
+      'calenderConditions',
+      'dayOfWeeks',
+      'user',
+      'categories',
+      'alarmState',
+    ],
   });
   return alarmInfo;
 }
