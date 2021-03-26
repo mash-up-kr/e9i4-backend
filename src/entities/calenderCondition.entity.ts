@@ -3,9 +3,6 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
-  JoinColumn,
-  OneToMany,
   ManyToOne,
   JoinTable,
 } from 'typeorm';
