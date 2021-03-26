@@ -59,8 +59,4 @@ export class User extends BaseEntity {
 
   @OneToMany(() => AlarmLike, alarmLike => alarmLike.alarm)
   alarmLikes: AlarmLike[];
-
-  @ManyToMany(() => AlarmState)
-  @JoinTable()
-  alarmStates: AlarmState[];
 }
