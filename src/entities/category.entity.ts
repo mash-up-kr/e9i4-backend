@@ -14,6 +14,6 @@ export class Category extends BaseEntity {
   @Column()
   name: string;
 
-  @OneToMany(type => AlarmCategory, alarmCategory => alarmCategory)
+  @OneToMany(() => AlarmCategory, alarmCategory => alarmCategory)
   alarmCategories: AlarmCategory[];
 }

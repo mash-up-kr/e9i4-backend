@@ -7,9 +7,9 @@ export class AlarmLike extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: bigint;
 
-  @ManyToOne(type => Alarm, alarm => alarm.alarmLikes)
+  @ManyToOne(() => Alarm, alarm => alarm.alarmLikes)
   alarm: Alarm;
 
-  @ManyToOne(type => User, user => user.alarmLikes)
+  @ManyToOne(() => User, user => user.alarmLikes)
   user: User;
 }
