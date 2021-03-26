@@ -35,7 +35,7 @@ export class AlarmState extends BaseEntity {
   })
   alarmType = AlarmType;
 
-  @OneToOne(type => Alarm)
+  @OneToOne(() => Alarm)
   @JoinColumn()
   alarm: Alarm;
 }

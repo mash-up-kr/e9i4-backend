@@ -51,13 +51,13 @@ export class User extends BaseEntity {
   @DeleteDateColumn({select: false})
   public deletedAt: Date;
 
-  @OneToMany(type => AlarmScrap, alarmScrap => alarmScrap.alarm)
+  @OneToMany(() => AlarmScrap, alarmScrap => alarmScrap.alarm)
   alarmScraps: AlarmScrap[];
 
-  @OneToMany(type => Alarm, alarm => alarm.user)
+  @OneToMany(() => Alarm, alarm => alarm.user)
   alarms: Alarm[];
 
-  @OneToMany(type => AlarmLike, alarmLike => alarmLike.alarm)
+  @OneToMany(() => AlarmLike, alarmLike => alarmLike.alarm)
   alarmLikes: AlarmLike[];
 
   @ManyToMany(() => AlarmState)
