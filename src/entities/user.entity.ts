@@ -1,7 +1,6 @@
 import {AlarmScrap} from './alarmScrap.entity';
 import {Alarm} from './alarm.entity';
 import {AlarmLike} from './alarmLike.entity';
-import {AlarmState} from './alarmState.entity';
 import {
   Entity,
   Column,
@@ -11,8 +10,6 @@ import {
   DeleteDateColumn,
   PrimaryGeneratedColumn,
   OneToMany,
-  ManyToMany,
-  JoinTable,
 } from 'typeorm';
 
 export enum PlatformType {
