@@ -4,7 +4,6 @@ import {Category} from '../entities/category.entity';
 import {User} from '../entities/user.entity';
 
 export async function addAlarm(
-  cronData: string,
   title: string,
   description: string,
   isActive: boolean,
@@ -14,7 +13,6 @@ export async function addAlarm(
   categoryIds: number[]
 ) {
   const alarm: Alarm = new Alarm();
-  alarm.cronData = cronData;
   alarm.title = title;
   alarm.description = description;
   alarm.userId = id;
@@ -79,7 +77,6 @@ export async function getIndividualAlarm(alarmId: number) {
 export async function updateAlarm(
   id: number,
   title: string,
-  cronData: string,
   description: string,
   isActive: boolean,
   isHidden: boolean,
@@ -93,7 +90,6 @@ export async function updateAlarm(
     where: {alarmId: id},
   });
   alarm.title = title;
-  alarm.cronData = cronData;
   alarm.description = description;
   alarmState.isActive = isActive;
   alarmState.isHidden = isHidden;
