@@ -73,7 +73,7 @@ export async function addAlarm(
       id: alarm.id,
     },
     relations: [
-      'calenderConditions',
+      'calenderCondition',
       'dayOfWeeks',
       'user',
       'categories',
