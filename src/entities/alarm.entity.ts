@@ -69,11 +69,11 @@ export class Alarm extends BaseEntity {
   @OneToOne(() => AlarmState, alarmState => alarmState.alarm)
   alarmState: AlarmState;
 
-  @OneToMany(
+  @OneToOne(
     () => CalenderCondition,
     calenderCondition => calenderCondition.alarm
   )
-  calenderConditions: CalenderCondition[];
+  calenderCondition: CalenderCondition;
 
   @OneToMany(() => DayOfWeek, dayOfWeek => dayOfWeek.alarm)
   dayOfWeeks: DayOfWeek[];
