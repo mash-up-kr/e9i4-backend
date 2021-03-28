@@ -2,7 +2,7 @@ import {Alarm} from '../entities/alarm.entity';
 import {AlarmState} from '../entities/alarmState.entity';
 import {Category} from '../entities/category.entity';
 import {User} from '../entities/user.entity';
-import {CalenderCondition} from '../entities/calenderCondition.entity';
+import {CalendarCondition} from '../entities/calendarCondition.entity';
 import {DayOfWeek} from '../entities/dayOfWeek.entity';
 
 export async function addAlarm(
@@ -32,15 +32,15 @@ export async function addAlarm(
   alarmState.isHidden = isHidden;
   alarmState.alarmType = alarmType;
   await alarmState.save();
-  const calenderCondition: CalenderCondition = new CalenderCondition();
-  calenderCondition.alarmId = alarm.id;
-  calenderCondition.year = year;
-  calenderCondition.month = month;
-  calenderCondition.dayOfMonth = dayOfMonth;
-  calenderCondition.hour = hour;
-  calenderCondition.minute = minute;
-  calenderCondition.second = second;
-  await calenderCondition.save();
+  const calendarCondition: CalendarCondition = new CalendarCondition();
+  calendarCondition.alarmId = alarm.id;
+  calendarCondition.year = year;
+  calendarCondition.month = month;
+  calendarCondition.dayOfMonth = dayOfMonth;
+  calendarCondition.hour = hour;
+  calendarCondition.minute = minute;
+  calendarCondition.second = second;
+  await calendarCondition.save();
 
   const dayOfWeekEntities: DayOfWeek[] = [];
   for (const week of dayOfWeek) {
@@ -51,7 +51,7 @@ export async function addAlarm(
     dayOfWeekEntities.push(dayOfWeekEntity);
   }
   alarm.dayOfWeeks = dayOfWeekEntities;
-  await calenderCondition.save();
+  await calendarCondition.save();
 
   const categoryEntities: Category[] = [];
   for (const category of categoryIds) {
@@ -73,7 +73,7 @@ export async function addAlarm(
       id: alarm.id,
     },
     relations: [
-      'calenderCondition',
+      'calendarCondition',
       'dayOfWeeks',
       'user',
       'categories',

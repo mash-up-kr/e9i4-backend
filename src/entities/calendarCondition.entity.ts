@@ -9,7 +9,7 @@ import {
 import {Alarm} from './alarm.entity';
 
 @Entity()
-export class CalenderCondition extends BaseEntity {
+export class CalendarCondition extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: bigint;
 

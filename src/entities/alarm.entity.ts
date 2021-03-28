@@ -4,7 +4,7 @@ import {User} from './user.entity';
 import {AlarmCategory} from './alarmCategory.entity';
 import {AlarmLike} from './alarmLike.entity';
 import {Category} from './category.entity';
-import {CalenderCondition} from './calenderCondition.entity';
+import {CalendarCondition} from './calendarCondition.entity';
 import {DayOfWeek} from './dayOfWeek.entity';
 import {
   Entity,
@@ -70,10 +70,10 @@ export class Alarm extends BaseEntity {
   alarmState: AlarmState;
 
   @OneToOne(
-    () => CalenderCondition,
-    calenderCondition => calenderCondition.alarm
+    () => CalendarCondition,
+    calendarCondition => calendarCondition.alarm
   )
-  calenderCondition: CalenderCondition;
+  calendarCondition: CalendarCondition;
 
   @OneToMany(() => DayOfWeek, dayOfWeek => dayOfWeek.alarm)
   dayOfWeeks: DayOfWeek[];
