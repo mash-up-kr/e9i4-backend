@@ -4,14 +4,14 @@ import * as alarmService from '../services/alarm.service';
 export async function addAlarm(req: Request, res: Response) {
   try {
     const title: string = req.body.alarm.title;
-    const year: number = req.body.alarm.calenderCondition.year;
-    const month: number = req.body.alarm.calenderCondition.month;
-    const dayOfMonth: number = req.body.alarm.calenderCondition.dayOfMonth;
+    const year: number = req.body.alarm.calendarCondition.year;
+    const month: number = req.body.alarm.calendarCondition.month;
+    const dayOfMonth: number = req.body.alarm.calendarCondition.dayOfMonth;
     const dayOfWeek: number[] =
-      req.body.alarm.calenderCondition.dayOfWeek || [];
-    const hour: number = req.body.alarm.calenderCondition.hour;
-    const minute: number = req.body.alarm.calenderCondition.minute;
-    const second: number = req.body.alarm.calenderCondition.second;
+      req.body.alarm.calendarCondition.dayOfWeek || [];
+    const hour: number = req.body.alarm.calendarCondition.hour;
+    const minute: number = req.body.alarm.calendarCondition.minute;
+    const second: number = req.body.alarm.calendarCondition.second;
     const description: string = req.body.alarm.description;
     const isActive: boolean = req.body.alarm.alarmState.isActive;
     const isHidden: boolean = req.body.alarm.alarmState.isHidden;
