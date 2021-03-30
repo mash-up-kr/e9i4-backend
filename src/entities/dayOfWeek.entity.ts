@@ -15,6 +15,8 @@ export class DayOfWeek extends BaseEntity {
   @Column()
   dayOfWeek: number;
 
-  @ManyToOne(() => Alarm, alarm => alarm.dayOfWeeks)
+  @ManyToOne(() => Alarm, alarm => alarm.dayOfWeeks, {
+    onDelete: 'CASCADE',
+  })
   alarm: Alarm;
 }

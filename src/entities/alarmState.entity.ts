@@ -35,7 +35,9 @@ export class AlarmState extends BaseEntity {
   })
   alarmType = AlarmType;
 
-  @OneToOne(() => Alarm)
+  @OneToOne(() => Alarm, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   alarm: Alarm;
 }

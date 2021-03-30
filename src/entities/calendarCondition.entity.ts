@@ -34,7 +34,9 @@ export class CalendarCondition extends BaseEntity {
   @Column({nullable: true, select: false})
   alarmId: bigint;
 
-  @OneToOne(() => Alarm)
+  @OneToOne(() => Alarm, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   alarm: Alarm;
 }
