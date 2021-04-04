@@ -4,7 +4,7 @@ import {Request, Response, NextFunction} from 'express';
 function decodeToken(token) {
   return new Promise((resolve, reject) => {
     if (process.env.JWT_SECRET_KEY === undefined) {
-      reject(new Error(`Can't find JWT_SECRET_KEY`));
+      reject(new Error("Can't find JWT_SECRET_KEY"));
       return;
     }
     jwt.verify(token, process.env.JWT_SECRET_KEY, (error, decoded) => {
@@ -22,7 +22,8 @@ export default async function (
   const encodedToken = req.headers['authorization'];
   if (!encodedToken) {
     return res.status(401).send({
-      error: `Can't find authorization token from headers (Need 'authorization' header)`,
+      error:
+        "Can't find authorization token from headers (Need 'authorization' header)",
     });
   }
 

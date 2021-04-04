@@ -4,6 +4,8 @@ import {User} from './user.entity';
 import {AlarmCategory} from './alarmCategory.entity';
 import {AlarmLike} from './alarmLike.entity';
 import {Category} from './category.entity';
+import {CalendarCondition} from './calendarCondition.entity';
+import {DayOfWeek} from './dayOfWeek.entity';
 import {
   Entity,
   Column,
@@ -23,9 +25,6 @@ export class Alarm extends BaseEntity {
 
   @Column()
   title: string;
-
-  @Column()
-  cronData: string;
 
   @Column()
   description: string;
@@ -48,16 +47,16 @@ export class Alarm extends BaseEntity {
   @Column({nullable: true})
   userId: number;
 
-  @OneToMany(type => AlarmScrap, alarmScrap => alarmScrap.alarm)
+  @OneToMany(() => AlarmScrap, alarmScrap => alarmScrap.alarm)
   alarmScraps: AlarmScrap[];
 
-  @OneToMany(type => AlarmCategory, alarmCategory => alarmCategory.alarm)
+  @OneToMany(() => AlarmCategory, alarmCategory => alarmCategory.alarm)
   alarmCategories: AlarmCategory[];
 
-  @OneToMany(type => AlarmLike, alarmLike => alarmLike.alarm)
+  @OneToMany(() => AlarmLike, alarmLike => alarmLike.alarm)
   alarmLikes: AlarmLike[];
 
-  @ManyToOne(type => User, user => user.alarms)
+  @ManyToOne(() => User, user => user.alarms)
   user: User;
 
   @JoinTable()
@@ -69,4 +68,13 @@ export class Alarm extends BaseEntity {
 
   @OneToOne(() => AlarmState, alarmState => alarmState.alarm)
   alarmState: AlarmState;
+
+  @OneToOne(
+    () => CalendarCondition,
+    calendarCondition => calendarCondition.alarm
+  )
+  calendarCondition: CalendarCondition;
+
+  @OneToMany(() => DayOfWeek, dayOfWeek => dayOfWeek.alarm)
+  dayOfWeeks: DayOfWeek[];
 }

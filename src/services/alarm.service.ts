@@ -2,10 +2,18 @@ import {Alarm} from '../entities/alarm.entity';
 import {AlarmState} from '../entities/alarmState.entity';
 import {Category} from '../entities/category.entity';
 import {User} from '../entities/user.entity';
+import {CalendarCondition} from '../entities/calendarCondition.entity';
+import {DayOfWeek} from '../entities/dayOfWeek.entity';
 
 export async function addAlarm(
-  cronData: string,
   title: string,
+  year: number,
+  month: number,
+  dayOfMonth: number,
+  dayOfWeek: number[],
+  hour: number,
+  minute: number,
+  second: number,
   description: string,
   isActive: boolean,
   isHidden: boolean,
@@ -14,7 +22,6 @@ export async function addAlarm(
   categoryIds: number[]
 ) {
   const alarm: Alarm = new Alarm();
-  alarm.cronData = cronData;
   alarm.title = title;
   alarm.description = description;
   alarm.userId = id;
@@ -25,18 +32,34 @@ export async function addAlarm(
   alarmState.isHidden = isHidden;
   alarmState.alarmType = alarmType;
   await alarmState.save();
+  const calendarCondition: CalendarCondition = new CalendarCondition();
+  calendarCondition.alarmId = alarm.id;
+  calendarCondition.year = year;
+  calendarCondition.month = month;
+  calendarCondition.dayOfMonth = dayOfMonth;
+  calendarCondition.hour = hour;
+  calendarCondition.minute = minute;
+  calendarCondition.second = second;
+  await calendarCondition.save();
+
+  const dayOfWeekEntities: DayOfWeek[] = [];
+  for (const week of dayOfWeek) {
+    const dayOfWeekEntity: DayOfWeek = new DayOfWeek();
+    dayOfWeekEntity.dayOfWeek = week;
+    dayOfWeekEntity.alarm = alarm;
+    await dayOfWeekEntity.save();
+    dayOfWeekEntities.push(dayOfWeekEntity);
+  }
 
   const categoryEntities: Category[] = [];
   for (const category of categoryIds) {
-    let categoryEntity: Category = await Category.findOne({
+    const categoryEntity: Category = await Category.findOne({
       where: {
         id: category,
       },
     });
     if (!categoryEntity) {
-      categoryEntity = new Category();
-      categoryEntity.id = category;
-      await categoryEntity.save();
+      throw Error('Category does not exist');
     }
     categoryEntities.push(categoryEntity);
   }
@@ -47,7 +70,13 @@ export async function addAlarm(
     where: {
       id: alarm.id,
     },
-    relations: ['user', 'categories', 'alarmState'],
+    relations: [
+      'calendarCondition',
+      'dayOfWeeks',
+      'user',
+      'categories',
+      'alarmState',
+    ],
   });
   return alarmInfo;
 }
@@ -81,26 +110,88 @@ export async function getIndividualAlarm(alarmId: number) {
 export async function updateAlarm(
   id: number,
   title: string,
-  cronData: string,
   description: string,
   isActive: boolean,
   isHidden: boolean,
-  alarmType: any
+  alarmType: any,
+  year: number,
+  month: number,
+  dayOfMonth: number,
+  dayOfWeek: number[],
+  hour: number,
+  minute: number,
+  second: number
 ) {
   const alarm: Alarm = await Alarm.findOne({
     where: {id: id},
-    relations: ['user', 'categories'],
   });
+  if (!alarm) {
+    throw Error('no alarm');
+  }
   const alarmState: AlarmState = await AlarmState.findOne({
     where: {alarmId: id},
   });
+  const matchedDayOfWeek: DayOfWeek[] = await DayOfWeek.find({
+    where: {alarm: {id: id}},
+  });
+  const calendarCondition: CalendarCondition = await CalendarCondition.findOne({
+    where: {alarmId: id},
+  });
+  let dayOfWeekEntities: DayOfWeek[] = matchedDayOfWeek;
+  // Delete dayOfWeek if it exists in DB but not in request array.
+  for (const week of matchedDayOfWeek) {
+    if (!dayOfWeek.includes(week.dayOfWeek)) {
+      await week.remove();
+      dayOfWeekEntities = dayOfWeekEntities.filter(v =>
+        dayOfWeek.includes(v.dayOfWeek)
+      );
+    }
+  }
+  // Create a new dayOfWeek if does not exist existed in DB but in request array.
+  for (const week of dayOfWeek) {
+    if (matchedDayOfWeek.findIndex(value => value.dayOfWeek === week) === -1) {
+      const dayOfWeekEntity = new DayOfWeek();
+      dayOfWeekEntity.dayOfWeek = week;
+      dayOfWeekEntity.alarm = alarm;
+      await dayOfWeekEntity.save();
+      dayOfWeekEntities.push(dayOfWeekEntity);
+    }
+  }
   alarm.title = title;
-  alarm.cronData = cronData;
   alarm.description = description;
   alarmState.isActive = isActive;
   alarmState.isHidden = isHidden;
   alarmState.alarmType = alarmType;
+  // Use JSON.parse and JSON.stringify to deep copy array.
+  alarm.dayOfWeeks = JSON.parse(JSON.stringify(dayOfWeekEntities));
+  calendarCondition.year = year;
+  calendarCondition.month = month;
+  calendarCondition.dayOfMonth = dayOfMonth;
+  calendarCondition.hour = hour;
+  calendarCondition.minute = minute;
+  calendarCondition.second = second;
+
   await alarm.save();
   await alarmState.save();
-  return alarm;
+  await calendarCondition.save();
+  const alarmInfo: Alarm = await Alarm.findOne({
+    where: {id: id},
+    relations: [
+      'calendarCondition',
+      'dayOfWeeks',
+      'user',
+      'categories',
+      'alarmState',
+    ],
+  });
+
+  return alarmInfo;
+}
+
+export async function deleteAlarm(id: number) {
+  const alarm: Alarm = await Alarm.findOne({
+    where: {id: id},
+  });
+  await alarm.remove();
+  return id;
 }
