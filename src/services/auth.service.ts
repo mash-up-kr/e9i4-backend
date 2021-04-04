@@ -23,7 +23,7 @@ export async function getUserBySub(sub: string) {
 export function createJwtToken(user: User) {
   return new Promise((resolve, reject) => {
     if (process.env.JWT_SECRET_KEY === undefined) {
-      reject(new Error(`Can't find JWT_SECRET_KEY`));
+      reject(new Error("Can't find JWT_SECRET_KEY"));
       return;
     }
     const payload = {
