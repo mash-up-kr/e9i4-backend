@@ -50,8 +50,6 @@ export async function addAlarm(
     await dayOfWeekEntity.save();
     dayOfWeekEntities.push(dayOfWeekEntity);
   }
-  alarm.dayOfWeeks = dayOfWeekEntities;
-  await calendarCondition.save();
 
   const categoryEntities: Category[] = [];
   for (const category of categoryIds) {
@@ -116,17 +114,28 @@ export async function updateAlarm(
   isActive: boolean,
   isHidden: boolean,
   alarmType: any,
-  dayOfWeek: number[]
+  year: number,
+  month: number,
+  dayOfMonth: number,
+  dayOfWeek: number[],
+  hour: number,
+  minute: number,
+  second: number
 ) {
   const alarm: Alarm = await Alarm.findOne({
     where: {id: id},
-    relations: ['user', 'categories', 'dayOfWeeks'],
   });
+  if (!alarm) {
+    throw Error('no alarm');
+  }
   const alarmState: AlarmState = await AlarmState.findOne({
     where: {alarmId: id},
   });
   const matchedDayOfWeek: DayOfWeek[] = await DayOfWeek.find({
     where: {alarm: {id: id}},
+  });
+  const calendarCondition: CalendarCondition = await CalendarCondition.findOne({
+    where: {alarmId: id},
   });
   let dayOfWeekEntities: DayOfWeek[] = matchedDayOfWeek;
   // Delete dayOfWeek if it exists in DB but not in request array.
@@ -155,9 +164,28 @@ export async function updateAlarm(
   alarmState.alarmType = alarmType;
   // Use JSON.parse and JSON.stringify to deep copy array.
   alarm.dayOfWeeks = JSON.parse(JSON.stringify(dayOfWeekEntities));
+  calendarCondition.year = year;
+  calendarCondition.month = month;
+  calendarCondition.dayOfMonth = dayOfMonth;
+  calendarCondition.hour = hour;
+  calendarCondition.minute = minute;
+  calendarCondition.second = second;
+
   await alarm.save();
   await alarmState.save();
-  return alarm;
+  await calendarCondition.save();
+  const alarmInfo: Alarm = await Alarm.findOne({
+    where: {id: id},
+    relations: [
+      'calendarCondition',
+      'dayOfWeeks',
+      'user',
+      'categories',
+      'alarmState',
+    ],
+  });
+
+  return alarmInfo;
 }
 
 export async function deleteAlarm(id: number) {

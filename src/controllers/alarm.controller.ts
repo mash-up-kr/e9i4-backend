@@ -89,7 +89,13 @@ export async function updateAlarm(req: Request, res: Response) {
     const isActive: boolean = req.body.alarmState.isActive;
     const isHidden: boolean = req.body.alarmState.isHidden;
     const alarmType: 'enum' = req.body.alarmState.alarmType;
+    const year: number = req.body.calendarCondition.year;
+    const month: number = req.body.calendarCondition.month;
+    const dayOfMonth: number = req.body.calendarCondition.dayOfMonth;
     const dayOfWeek: number[] = req.body.calendarCondition.dayOfWeek;
+    const hour: number = req.body.calendarCondition.hour;
+    const minute: number = req.body.calendarCondition.minute;
+    const second: number = req.body.calendarCondition.second;
     if (!description && !isActive && !isHidden && !alarmType) {
       throw Error('Invalid body');
     }
@@ -100,7 +106,13 @@ export async function updateAlarm(req: Request, res: Response) {
       isActive,
       isHidden,
       alarmType,
-      dayOfWeek
+      year,
+      month,
+      dayOfMonth,
+      dayOfWeek,
+      hour,
+      minute,
+      second
     );
     res.status(200).json({data: alarm});
   } catch (err) {
