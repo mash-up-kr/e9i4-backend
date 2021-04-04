@@ -115,20 +115,46 @@ export async function updateAlarm(
   description: string,
   isActive: boolean,
   isHidden: boolean,
-  alarmType: any
+  alarmType: any,
+  dayOfWeek: number[]
 ) {
   const alarm: Alarm = await Alarm.findOne({
     where: {id: id},
-    relations: ['user', 'categories'],
+    relations: ['user', 'categories', 'dayOfWeeks'],
   });
   const alarmState: AlarmState = await AlarmState.findOne({
     where: {alarmId: id},
   });
+  const matchedDayOfWeek: DayOfWeek[] = await DayOfWeek.find({
+    where: {alarm: {id: id}},
+  });
+  let dayOfWeekEntities: DayOfWeek[] = matchedDayOfWeek;
+  // Delete dayOfWeek if it exists in DB but not in request array.
+  for (const week of matchedDayOfWeek) {
+    if (!dayOfWeek.includes(week.dayOfWeek)) {
+      await week.remove();
+      dayOfWeekEntities = dayOfWeekEntities.filter(v =>
+        dayOfWeek.includes(v.dayOfWeek)
+      );
+    }
+  }
+  // Create a new dayOfWeek if does not exist existed in DB but in request array.
+  for (const week of dayOfWeek) {
+    if (matchedDayOfWeek.findIndex(value => value.dayOfWeek === week) === -1) {
+      const dayOfWeekEntity = new DayOfWeek();
+      dayOfWeekEntity.dayOfWeek = week;
+      dayOfWeekEntity.alarm = alarm;
+      await dayOfWeekEntity.save();
+      dayOfWeekEntities.push(dayOfWeekEntity);
+    }
+  }
   alarm.title = title;
   alarm.description = description;
   alarmState.isActive = isActive;
   alarmState.isHidden = isHidden;
   alarmState.alarmType = alarmType;
+  // Use JSON.parse and JSON.stringify to deep copy array.
+  alarm.dayOfWeeks = JSON.parse(JSON.stringify(dayOfWeekEntities));
   await alarm.save();
   await alarmState.save();
   return alarm;

@@ -89,6 +89,7 @@ export async function updateAlarm(req: Request, res: Response) {
     const isActive: boolean = req.body.alarmState.isActive;
     const isHidden: boolean = req.body.alarmState.isHidden;
     const alarmType: 'enum' = req.body.alarmState.alarmType;
+    const dayOfWeek: number[] = req.body.calendarCondition.dayOfWeek;
     if (!description && !isActive && !isHidden && !alarmType) {
       throw Error('Invalid body');
     }
@@ -98,7 +99,8 @@ export async function updateAlarm(req: Request, res: Response) {
       description,
       isActive,
       isHidden,
-      alarmType
+      alarmType,
+      dayOfWeek
     );
     res.status(200).json({data: alarm});
   } catch (err) {
