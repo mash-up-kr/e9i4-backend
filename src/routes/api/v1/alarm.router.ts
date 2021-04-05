@@ -8,5 +8,6 @@ router.get('/my', alarmController.getMyAlarm);
 router.get('/:alarmId', alarmController.getIndividualAlarm);
 router.put('/:alarmId', alarmController.updateAlarm);
 router.post('/', alarmController.addAlarm);
+router.delete('/:alarmId', alarmController.deleteAlarm);
 
 export default router;
