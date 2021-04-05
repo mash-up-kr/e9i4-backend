@@ -3,21 +3,22 @@
 import {Request, Response} from 'express';
 import {PlatformType} from '../entities/user.entity';
 import * as userService from '../services/user.service';
-
-export async function getUsers(req: Request, res: Response) {
-  try {
-    const users = await userService.getUsers();
-    res.status(200).send(users);
-  } catch (err) {
-    res.status(500).send('Error while find users');
-  }
-}
+import * as authService from '../services/auth.service';
 
 export async function getUser(req: Request, res: Response) {
-  const id = Number(req.params.id);
   try {
-    const user = await userService.getUser(id);
-    res.status(200).send(user);
+    const userId = Number(req.user['id']);
+    if (!userId) {
+      throw Error(`Can't find user from authorization`);
+    }
+    const user = await userService.getUser(userId);
+    const accessToken = await authService.createJwtToken(user);
+    res.status(200).send({
+      data: {
+        user: user,
+        accessToken: accessToken,
+      },
+    });
   } catch (err) {
     res.status(500).send('Error while find user');
   }
@@ -25,30 +26,43 @@ export async function getUser(req: Request, res: Response) {
 
 export async function addUser(req: Request, res: Response) {
   try {
-    const nickname: string = req.body.nickname;
+    const sub: string = req.body.sub;
+    const email: string = req.body.email;
+    const nickname: string = req.body.nickname || `user${Date.now()}`;
     const platformType: PlatformType = req.body.platformType;
-    if (!nickname) {
+
+    if (!sub || !email || !nickname || !platformType) {
       throw Error('Invalid body');
     }
-    const user = await userService.addUser(nickname, platformType);
-    res.status(200).send(user);
+    const user = await userService.addUser(sub, email, nickname, platformType);
+    const accessToken = await authService.createJwtToken(user);
+    res.status(200).send({
+      data: {
+        user: user,
+        accessToken: accessToken,
+      },
+    });
   } catch (err) {
-    res.status(500).send(`Error while add user (${err.message})`);
+    res.status(500).send(`Error while sign up (${err.message})`);
   }
 }
 
 export async function updateUser(req: Request, res: Response) {
   try {
-    const id = Number(req.params.id);
+    const userId = Number(req.user['id']);
     const nickname: string = req.body.nickname;
     if (!nickname) {
       throw Error('Invalid body');
     }
-    if (!id) {
-      throw Error('Invalid params');
+    if (!userId) {
+      throw Error(`Can't find user from authorization`);
     }
-    const user = await userService.updateUser(id, nickname);
-    res.status(200).send(user);
+    const user = await userService.updateUser(userId, nickname);
+    res.status(200).send({
+      data: {
+        user: user,
+      },
+    });
   } catch (err) {
     res.status(500).send(`Error while update user (${err.message})`);
   }
@@ -56,12 +70,16 @@ export async function updateUser(req: Request, res: Response) {
 
 export async function deleteUser(req: Request, res: Response) {
   try {
-    const id = Number(req.params.id);
-    if (!id) {
-      throw Error('Invalid params');
+    const userId = Number(req.user['id']);
+    if (!userId) {
+      throw Error(`Can't find user from authorization`);
     }
-    const user = await userService.deleteUser(id);
-    res.status(200).send(user);
+    const user = await userService.deleteUser(userId);
+    res.status(200).send({
+      data: {
+        user: user,
+      },
+    });
   } catch (err) {
     res.status(500).send(`Error while delete user (${err.message})`);
   }

@@ -9,8 +9,8 @@ import jwtMiddleware from '../../../middlewares/jwtMiddleware';
 const router: Router = express.Router();
 
 router.use('/auth', authRouter);
-router.use(jwtMiddleware);
 router.use('/user', userRouter);
+router.use(jwtMiddleware);
 router.use('/category', categoryRouter);
 router.use('/alarms', alarmRouter);
 

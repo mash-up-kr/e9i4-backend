@@ -1,7 +1,6 @@
 import express, {Router, Request} from 'express';
 import passport from 'passport';
 import {Profile} from 'passport-apple';
-import * as authController from '../../../controllers/auth.controller';
 
 interface IRequest extends Request {
   profile?: Profile;
@@ -21,8 +20,5 @@ router.post('/callback', (req: IRequest, res, next) => {
   })(req, res, next);
   return res.json(req.profile);
 });
-
-router.post('/signin', authController.signIn);
-router.post('/signup', authController.signUp);
 
 export default router;
