@@ -1,24 +1,5 @@
 import {PlatformType, User} from '../entities/user.entity';
 import * as jwt from 'jsonwebtoken';
-export async function addUser(
-  sub: string,
-  email: string,
-  nickname: string,
-  platformType: PlatformType
-) {
-  const user: User = new User();
-  user.sub = sub;
-  user.nickname = nickname;
-  user.email = email;
-  user.platformType = platformType;
-  await user.save();
-  return user;
-}
-
-export async function getUserBySub(sub: string) {
-  const user: User = await User.findOne({sub: sub});
-  return user;
-}
 
 export function createJwtToken(user: User) {
   return new Promise((resolve, reject) => {
