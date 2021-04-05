@@ -1,10 +1,5 @@
 import {User, PlatformType} from '../entities/user.entity';
 
-// export async function getUsers() {
-//   const users: User[] = await User.find({withDeleted: false});
-//   return users;
-// }
-
 export async function getUser(id: number) {
   const user: User = await User.findOne(
     {id},
