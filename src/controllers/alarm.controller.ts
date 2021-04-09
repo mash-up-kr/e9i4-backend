@@ -16,7 +16,7 @@ export async function addAlarm(req: Request, res: Response) {
     const isActive: boolean = req.body.alarm.alarmState.isActive;
     const isHidden: boolean = req.body.alarm.alarmState.isHidden;
     const alarmType: 'enum' = req.body.alarm.alarmState.alarmType;
-    const id = Number(req.headers.id);
+    const userId = Number(req.user['id']);
     const categoryIds: number[] = req.body.categoryIds || [];
     const alarm = await alarmService.addAlarm(
       title,
@@ -31,7 +31,7 @@ export async function addAlarm(req: Request, res: Response) {
       isActive,
       isHidden,
       alarmType,
-      id,
+      userId,
       categoryIds
     );
     res.status(200).json({data: alarm});
