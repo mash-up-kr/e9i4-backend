@@ -7,11 +7,11 @@ import * as authService from '../services/auth.service';
 
 export async function getUser(req: Request, res: Response) {
   try {
-    const userId = Number(req.user['id']);
-    if (!userId) {
-      throw Error(`Can't find user from authorization`);
+    const sub: string = req.body.sub;
+    if (!sub) {
+      throw Error('Invalid body');
     }
-    const user = await userService.getUser(userId);
+    const user = await userService.getUserBySub(sub);
     const accessToken = await authService.createJwtToken(user);
     res.status(200).send({
       data: {
