@@ -7,9 +7,9 @@ import * as authService from '../services/auth.service';
 
 export async function getUser(req: Request, res: Response) {
   try {
-    const sub: string = req.body.sub;
+    const sub = String(req.query.sub);
     if (!sub) {
-      throw Error('Invalid body');
+      throw Error(`Can't find sub from query string`);
     }
     const user = await userService.getUserBySub(sub);
     const accessToken = await authService.createJwtToken(user);
