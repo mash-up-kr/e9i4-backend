@@ -1,8 +1,8 @@
 import {User, PlatformType} from '../entities/user.entity';
 
-export async function getUser(id: number) {
+export async function getUserBySub(sub: string) {
   const user: User = await User.findOne(
-    {id},
+    {sub},
     {
       select: [
         'id',
