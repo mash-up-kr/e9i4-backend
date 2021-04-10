@@ -45,6 +45,7 @@ export async function addAlarm(
   const dayOfWeekEntities: DayOfWeek[] = [];
   for (const week of dayOfWeek) {
     const dayOfWeekEntity: DayOfWeek = new DayOfWeek();
+    dayOfWeekEntity.calendarCondition = calendarCondition;
     dayOfWeekEntity.dayOfWeek = week;
     dayOfWeekEntity.alarm = alarm;
     await dayOfWeekEntity.save();
@@ -72,7 +73,7 @@ export async function addAlarm(
     },
     relations: [
       'calendarCondition',
-      'dayOfWeeks',
+      'calendarCondition.dayOfWeeks',
       'user',
       'categories',
       'alarmState',
@@ -83,7 +84,13 @@ export async function addAlarm(
 
 export async function getAlarms() {
   const alarms: Alarm[] = await Alarm.find({
-    relations: ['user', 'categories'],
+    relations: [
+      'user',
+      'categories',
+      'alarmState',
+      'calendarCondition',
+      'calendarCondition.dayOfWeeks',
+    ],
   });
   return alarms;
 }
@@ -94,7 +101,13 @@ export async function getMyAlarms(userId: number) {
   });
   const myAlarms: Alarm[] = await Alarm.find({
     where: {userId: user},
-    relations: ['user', 'categories', 'alarmState'],
+    relations: [
+      'user',
+      'categories',
+      'alarmState',
+      'calendarCondition',
+      'calendarCondition.dayOfWeeks',
+    ],
   });
   return myAlarms;
 }
@@ -102,7 +115,13 @@ export async function getMyAlarms(userId: number) {
 export async function getIndividualAlarm(alarmId: number) {
   const alarm: Alarm = await Alarm.findOne({
     where: {id: alarmId},
-    relations: ['user', 'categories'],
+    relations: [
+      'user',
+      'categories',
+      'alarmState',
+      'calendarCondition',
+      'calendarCondition.dayOfWeeks',
+    ],
   });
   return alarm;
 }
@@ -178,7 +197,7 @@ export async function updateAlarm(
     where: {id: id},
     relations: [
       'calendarCondition',
-      'dayOfWeeks',
+      'calendarCondition.dayOfWeeks',
       'user',
       'categories',
       'alarmState',
