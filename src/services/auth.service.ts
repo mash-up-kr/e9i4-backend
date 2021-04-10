@@ -1,4 +1,4 @@
-import {PlatformType, User} from '../entities/user.entity';
+import {User} from '../entities/user.entity';
 import * as jwt from 'jsonwebtoken';
 
 export function createJwtToken(user: User) {
