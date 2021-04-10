@@ -71,6 +71,6 @@ export async function deleteUser(id: number) {
       ],
     }
   );
-  await user.softRemove();
+  await user.remove();
   return user;
 }
