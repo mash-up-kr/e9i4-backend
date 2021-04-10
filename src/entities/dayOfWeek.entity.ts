@@ -6,6 +6,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import {Alarm} from './alarm.entity';
+import {CalendarCondition} from './calendarCondition.entity';
 
 @Entity()
 export class DayOfWeek extends BaseEntity {
@@ -19,4 +20,10 @@ export class DayOfWeek extends BaseEntity {
     onDelete: 'CASCADE',
   })
   alarm: Alarm;
+
+  @ManyToOne(
+    () => CalendarCondition,
+    calendarCondition => calendarCondition.dayOfWeeks
+  )
+  calendarCondition: CalendarCondition;
 }

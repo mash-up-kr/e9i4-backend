@@ -5,8 +5,10 @@ import {
   Column,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import {Alarm} from './alarm.entity';
+import {DayOfWeek} from './dayOfWeek.entity';
 
 @Entity()
 export class CalendarCondition extends BaseEntity {
@@ -39,4 +41,7 @@ export class CalendarCondition extends BaseEntity {
   })
   @JoinColumn()
   alarm: Alarm;
+
+  @OneToMany(() => DayOfWeek, dayOfWeek => dayOfWeek.calendarCondition)
+  dayOfWeeks: DayOfWeek[];
 }
