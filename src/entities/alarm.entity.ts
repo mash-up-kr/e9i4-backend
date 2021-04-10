@@ -56,7 +56,7 @@ export class Alarm extends BaseEntity {
   @OneToMany(() => AlarmLike, alarmLike => alarmLike.alarm)
   alarmLikes: AlarmLike[];
 
-  @ManyToOne(() => User, user => user.alarms)
+  @ManyToOne(() => User, user => user.alarms, {onDelete: 'CASCADE'})
   user: User;
 
   @JoinTable()
