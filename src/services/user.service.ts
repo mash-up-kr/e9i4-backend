@@ -92,10 +92,9 @@ const randomNumber = (min, max) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
 export async function getRandomNickname() {
-  const randomNickname = `${RANDOM_TERM[randomNumber(0, 9)]}${randomNumber(
-    1,
-    100000
-  )}`;
+  const randomNickname = `${
+    RANDOM_TERM[randomNumber(0, RANDOM_TERM.length - 1)]
+  }${randomNumber(1, 100000)}`;
   const user: User = await User.findOne({
     where: {nickname: randomNickname},
     select: ['id', 'nickname'],
