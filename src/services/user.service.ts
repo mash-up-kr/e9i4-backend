@@ -74,3 +74,33 @@ export async function deleteUser(id: number) {
   await user.remove();
   return user;
 }
+
+const RANDOM_TERM = [
+  '알파카',
+  '너구리',
+  '감자도리',
+  '뱁새',
+  '개구리',
+  '오리너구리',
+  '오이',
+  '빛과소금',
+  '복숭아',
+  '튤립',
+];
+
+const randomNumber = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+
+export async function getRandomNickname() {
+  const randomNickname = `${
+    RANDOM_TERM[randomNumber(0, RANDOM_TERM.length - 1)]
+  }${randomNumber(1, 100000)}`;
+  const user: User = await User.findOne({
+    where: {nickname: randomNickname},
+    select: ['id', 'nickname'],
+  });
+  if (!user) {
+    return randomNickname;
+  }
+  getRandomNickname();
+}

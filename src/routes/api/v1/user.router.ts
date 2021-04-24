@@ -8,6 +8,7 @@ const router: Router = express.Router();
 
 router.post('/', userController.addUser); // POST /api/v1/user
 router.get('/', userController.getUser); // GET /api/v1/user
+router.get('/random-nickname', userController.getRandomNickname); // GET /api/v1/user/random-nickname
 
 router.put('/', jwtMiddleware, userController.updateUser); // PUT /api/v1/user
 router.delete('/', jwtMiddleware, userController.deleteUser); // DELETE /api/v1/user
