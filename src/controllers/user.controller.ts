@@ -9,7 +9,7 @@ export async function getUser(req: Request, res: Response) {
   try {
     const sub = String(req.query.sub);
     if (!sub) {
-      throw Error(`Can't find sub from query string`);
+      throw Error("Can't find sub from query string");
     }
     const user = await userService.getUserBySub(sub);
     const accessToken = await authService.createJwtToken(user);
@@ -55,7 +55,7 @@ export async function updateUser(req: Request, res: Response) {
       throw Error('Invalid body');
     }
     if (!userId) {
-      throw Error(`Can't find user from authorization`);
+      throw Error("Can't find user from authorization");
     }
     const user = await userService.updateUser(userId, nickname);
     res.status(200).send({
@@ -72,7 +72,7 @@ export async function deleteUser(req: Request, res: Response) {
   try {
     const userId = Number(req.user['id']);
     if (!userId) {
-      throw Error(`Can't find user from authorization`);
+      throw Error("Can't find user from authorization");
     }
     const user = await userService.deleteUser(userId);
     res.status(200).send({
@@ -82,5 +82,18 @@ export async function deleteUser(req: Request, res: Response) {
     });
   } catch (err) {
     res.status(500).send(`Error while delete user (${err.message})`);
+  }
+}
+
+export async function getRandomNickname(req: Request, res: Response) {
+  try {
+    const nickname = await userService.getRandomNickname();
+    res.status(200).send({
+      data: {
+        nickname: nickname,
+      },
+    });
+  } catch (err) {
+    res.status(500).send('Error while get random nickname');
   }
 }
