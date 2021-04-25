@@ -143,6 +143,6 @@ export async function toggleLike(req: Request, res: Response) {
     const like = await alarmService.toggleLike(alarmId, userId);
     res.status(200).json({like});
   } catch (err) {
-    res.status(500).send(`Error while turn on like (${err.message})`);
+    res.status(500).send(`Error while toggle like (${err.message})`);
   }
 }
