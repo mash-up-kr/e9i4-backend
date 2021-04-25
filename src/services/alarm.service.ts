@@ -4,6 +4,7 @@ import {Category} from '../entities/category.entity';
 import {User} from '../entities/user.entity';
 import {CalendarCondition} from '../entities/calendarCondition.entity';
 import {DayOfWeek} from '../entities/dayOfWeek.entity';
+import {AlarmLike} from '../entities/alarmLike.entity';
 
 export async function addAlarm(
   title: string,
@@ -88,6 +89,7 @@ export async function addAlarm(
       ...alarmInfo.calendarCondition,
       dayOfWeeks: dayOfWeekArray,
     },
+    like: false, // TODO: 조회해서 true, false 반영하기
   };
 }
 
@@ -107,6 +109,7 @@ export async function getAlarms() {
       ...v.calendarCondition,
       dayOfWeeks: v.calendarCondition?.dayOfWeeks.map(v => v.dayOfWeek),
     },
+    like: false,
   }));
   return newFormatAlarms;
 }
@@ -131,6 +134,7 @@ export async function getMyAlarms(userId: number) {
       ...v.calendarCondition,
       dayOfWeeks: v.calendarCondition?.dayOfWeeks.map(v => v.dayOfWeek),
     },
+    like: false,
   }));
   return newFormatAlarms;
 }
@@ -152,6 +156,7 @@ export async function getIndividualAlarm(alarmId: number) {
   return {
     ...alarm,
     calendarCondition: {...alarm.calendarCondition, dayOfWeeks: dayOfWeekArray},
+    like: false,
   };
 }
 
@@ -264,6 +269,7 @@ export async function updateAlarm(
       ...alarmInfo.calendarCondition,
       dayOfWeeks: dayOfWeekArray,
     },
+    like: false,
   };
 }
 
@@ -273,4 +279,44 @@ export async function deleteAlarm(id: number) {
   });
   await alarm.remove();
   return id;
+}
+
+export async function toggleLike(userId: number, alarmId: number) {
+  // TODO: Need transaction
+  const alarm: Alarm = await Alarm.findOne({
+    where: {id: alarmId},
+    relations: [
+      'calendarCondition',
+      'calendarCondition.dayOfWeeks',
+      'user',
+      'categories',
+      'alarmState',
+    ],
+  });
+  if (!alarm) {
+    throw Error(`Can't find alarm (${alarmId})`);
+  }
+  const user: User = await User.findOne({
+    where: {id: userId},
+  });
+  if (!user) {
+    throw Error(`Can't find user (${userId})`);
+  }
+
+  const like = await AlarmLike.findOne({
+    where: {alarm: alarm, user: user},
+  });
+
+  if (like) {
+    // Toggle off
+    await like.remove();
+    return false;
+  } else {
+    // Toggle on
+    const alarmLike: AlarmLike = new AlarmLike();
+    alarmLike.alarm = alarm;
+    alarmLike.user = user;
+    await alarmLike.save();
+    return true;
+  }
 }
