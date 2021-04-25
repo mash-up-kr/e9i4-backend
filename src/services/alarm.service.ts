@@ -155,6 +155,28 @@ export async function getIndividualAlarm(alarmId: number) {
   };
 }
 
+export async function getPopularAlarms(limit: number) {
+  const alarms: Alarm[] = await Alarm.find({
+    order: {likeCnt: 'DESC'},
+    relations: [
+      'user',
+      'categories',
+      'alarmState',
+      'calendarCondition',
+      'calendarCondition.dayOfWeeks',
+    ],
+    take: limit ?? 10,
+  });
+  const newFormatAlarms = alarms.map(v => ({
+    ...v,
+    calendarCondition: {
+      ...v.calendarCondition,
+      dayOfWeeks: v.calendarCondition?.dayOfWeeks.map(v => v.dayOfWeek),
+    },
+  }));
+  return newFormatAlarms;
+}
+
 export async function updateAlarm(
   id: number,
   title: string,
