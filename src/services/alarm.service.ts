@@ -4,6 +4,7 @@ import {Category} from '../entities/category.entity';
 import {User} from '../entities/user.entity';
 import {CalendarCondition} from '../entities/calendarCondition.entity';
 import {DayOfWeek} from '../entities/dayOfWeek.entity';
+import {AlarmLike} from '../entities/alarmLike.entity';
 
 export async function addAlarm(
   title: string,
@@ -273,4 +274,44 @@ export async function deleteAlarm(id: number) {
   });
   await alarm.remove();
   return id;
+}
+
+export async function toggleLike(userId: number, alarmId: number) {
+  // TODO: Need transaction
+  const alarm: Alarm = await Alarm.findOne({
+    where: {id: alarmId},
+    relations: [
+      'calendarCondition',
+      'calendarCondition.dayOfWeeks',
+      'user',
+      'categories',
+      'alarmState',
+    ],
+  });
+  if (!alarm) {
+    throw Error(`Can't find alarm (${alarmId})`);
+  }
+  const user: User = await User.findOne({
+    where: {id: userId},
+  });
+  if (!user) {
+    throw Error(`Can't find user (${userId})`);
+  }
+
+  const like = await AlarmLike.findOne({
+    where: {alarm: alarm, user: user},
+  });
+
+  if (like) {
+    // Toggle off
+    await like.remove();
+    return false;
+  } else {
+    // Toggle on
+    const alarmLike: AlarmLike = new AlarmLike();
+    alarmLike.alarm = alarm;
+    alarmLike.user = user;
+    await alarmLike.save();
+    return true;
+  }
 }
