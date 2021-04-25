@@ -78,6 +78,16 @@ export async function getIndividualAlarm(req: Request, res: Response) {
   }
 }
 
+export async function getPopularAlarms(req: Request, res: Response) {
+  try {
+    const limit: number | undefined = req.body.limit;
+    const alarms = await alarmService.getPopularAlarms(limit);
+    res.status(200).json({data: alarms});
+  } catch (err) {
+    res.status(500).send(`Error while get popular alarm (${err.message})`);
+  }
+}
+
 export async function updateAlarm(req: Request, res: Response) {
   try {
     const id = Number(req.params.alarmId);
