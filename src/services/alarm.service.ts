@@ -89,6 +89,7 @@ export async function addAlarm(
       ...alarmInfo.calendarCondition,
       dayOfWeeks: dayOfWeekArray,
     },
+    like: false, // TODO: 조회해서 true, false 반영하기
   };
 }
 
@@ -108,6 +109,7 @@ export async function getAlarms() {
       ...v.calendarCondition,
       dayOfWeeks: v.calendarCondition?.dayOfWeeks.map(v => v.dayOfWeek),
     },
+    like: false,
   }));
   return newFormatAlarms;
 }
@@ -132,6 +134,7 @@ export async function getMyAlarms(userId: number) {
       ...v.calendarCondition,
       dayOfWeeks: v.calendarCondition?.dayOfWeeks.map(v => v.dayOfWeek),
     },
+    like: false,
   }));
   return newFormatAlarms;
 }
@@ -153,6 +156,7 @@ export async function getIndividualAlarm(alarmId: number) {
   return {
     ...alarm,
     calendarCondition: {...alarm.calendarCondition, dayOfWeeks: dayOfWeekArray},
+    like: false,
   };
 }
 
@@ -265,6 +269,7 @@ export async function updateAlarm(
       ...alarmInfo.calendarCondition,
       dayOfWeeks: dayOfWeekArray,
     },
+    like: false,
   };
 }
 
