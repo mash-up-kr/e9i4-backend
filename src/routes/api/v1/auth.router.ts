@@ -14,11 +14,13 @@ router.get('/signin', passport.authenticate('apple'));
 // POST /api/v1/auth/callback
 router.post('/callback', (req: IRequest, res, next) => {
   passport.authenticate('apple', (err, profile: Profile) => {
-    req.profile = profile;
-    console.log(profile);
-    next();
+    // req.profile = profile;
+    // console.log(profile);
+    // next();
+    res.json(profile);
   })(req, res, next);
-  return res.json(req.profile);
+  //
+  // return res.json(req.profile);
 });
 
 export default router;
