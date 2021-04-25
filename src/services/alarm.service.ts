@@ -20,12 +20,14 @@ export async function addAlarm(
   isHidden: boolean,
   alarmType: any,
   id: number,
-  categoryIds: number[]
+  categoryIds: number[],
+  url: string | null
 ) {
   const alarm: Alarm = new Alarm();
   alarm.title = title;
   alarm.description = description;
   alarm.userId = id;
+  alarm.url = url;
   await alarm.save();
   const alarmState: AlarmState = new AlarmState();
   alarmState.alarm = alarm;
@@ -196,7 +198,8 @@ export async function updateAlarm(
   hour: number,
   minute: number,
   second: number,
-  categoryIds: number[]
+  categoryIds: number[],
+  url: string | null
 ) {
   const alarm: Alarm = await Alarm.findOne({
     where: {id: id},
@@ -252,6 +255,7 @@ export async function updateAlarm(
   }
   alarm.title = title;
   alarm.description = description;
+  alarm.url = url;
   alarmState.isActive = isActive;
   alarmState.isHidden = isHidden;
   alarmState.alarmType = alarmType;

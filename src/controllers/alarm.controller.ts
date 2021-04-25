@@ -13,6 +13,7 @@ export async function addAlarm(req: Request, res: Response) {
     const minute: number = req.body.alarm.calendarCondition.minute;
     const second: number = req.body.alarm.calendarCondition.second;
     const description: string = req.body.alarm.description;
+    const url: string | null = req.body.alarm.url || null;
     const isActive: boolean = req.body.alarm.alarmState.isActive;
     const isHidden: boolean = req.body.alarm.alarmState.isHidden;
     const alarmType: 'enum' = req.body.alarm.alarmState.alarmType;
@@ -32,7 +33,8 @@ export async function addAlarm(req: Request, res: Response) {
       isHidden,
       alarmType,
       userId,
-      categoryIds
+      categoryIds,
+      url
     );
     res.status(200).json({data: alarm});
   } catch (err) {
@@ -96,6 +98,7 @@ export async function updateAlarm(req: Request, res: Response) {
     }
     const title: string = req.body.title;
     const description: string = req.body.description;
+    const url: string | null = req.body.url || null;
     const isActive: boolean = req.body.alarmState.isActive;
     const isHidden: boolean = req.body.alarmState.isHidden;
     const alarmType: 'enum' = req.body.alarmState.alarmType;
@@ -124,7 +127,8 @@ export async function updateAlarm(req: Request, res: Response) {
       hour,
       minute,
       second,
-      categoryIds
+      categoryIds,
+      url
     );
     res.status(200).json({data: alarm});
   } catch (err) {
