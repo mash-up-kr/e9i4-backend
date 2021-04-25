@@ -10,5 +10,6 @@ router.get('/:alarmId', alarmController.getIndividualAlarm);
 router.put('/:alarmId', alarmController.updateAlarm);
 router.post('/', alarmController.addAlarm);
 router.delete('/:alarmId', alarmController.deleteAlarm);
+router.post('/:alarmId/like', alarmController.toggleLike);
 
 export default router;
