@@ -142,3 +142,17 @@ export async function deleteAlarm(req: Request, res: Response) {
     res.status(500).send(`Error while delete alarm (${err.message})`);
   }
 }
+
+export async function toggleLike(req: Request, res: Response) {
+  try {
+    const alarmId = Number(req.params.alarmId);
+    const userId = Number(req.user['id']);
+    if (!alarmId || !userId) {
+      throw Error('Invalid params');
+    }
+    const like = await alarmService.toggleLike(alarmId, userId);
+    res.status(200).json({like});
+  } catch (err) {
+    res.status(500).send(`Error while turn on like (${err.message})`);
+  }
+}
