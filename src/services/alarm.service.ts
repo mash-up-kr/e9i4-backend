@@ -79,7 +79,16 @@ export async function addAlarm(
       'alarmState',
     ],
   });
-  return alarmInfo;
+  const dayOfWeekArray = alarmInfo.calendarCondition.dayOfWeeks.map(
+    v => v.dayOfWeek
+  );
+  return {
+    ...alarmInfo,
+    calendarCondition: {
+      ...alarmInfo.calendarCondition,
+      dayOfWeeks: dayOfWeekArray,
+    },
+  };
 }
 
 export async function getAlarms() {
@@ -92,7 +101,14 @@ export async function getAlarms() {
       'calendarCondition.dayOfWeeks',
     ],
   });
-  return alarms;
+  const newFormatAlarms = alarms.map(v => ({
+    ...v,
+    calendarCondition: {
+      ...v.calendarCondition,
+      dayOfWeeks: v.calendarCondition?.dayOfWeeks.map(v => v.dayOfWeek),
+    },
+  }));
+  return newFormatAlarms;
 }
 
 export async function getMyAlarms(userId: number) {
@@ -109,7 +125,14 @@ export async function getMyAlarms(userId: number) {
       'calendarCondition.dayOfWeeks',
     ],
   });
-  return myAlarms;
+  const newFormatAlarms = myAlarms.map(v => ({
+    ...v,
+    calendarCondition: {
+      ...v.calendarCondition,
+      dayOfWeeks: v.calendarCondition?.dayOfWeeks.map(v => v.dayOfWeek),
+    },
+  }));
+  return newFormatAlarms;
 }
 
 export async function getIndividualAlarm(alarmId: number) {
@@ -123,7 +146,13 @@ export async function getIndividualAlarm(alarmId: number) {
       'calendarCondition.dayOfWeeks',
     ],
   });
-  return alarm;
+  const dayOfWeekArray = alarm.calendarCondition.dayOfWeeks.map(
+    v => v.dayOfWeek
+  );
+  return {
+    ...alarm,
+    calendarCondition: {...alarm.calendarCondition, dayOfWeeks: dayOfWeekArray},
+  };
 }
 
 export async function updateAlarm(
@@ -172,6 +201,7 @@ export async function updateAlarm(
       const dayOfWeekEntity = new DayOfWeek();
       dayOfWeekEntity.dayOfWeek = week;
       dayOfWeekEntity.alarm = alarm;
+      dayOfWeekEntity.calendarCondition = calendarCondition;
       await dayOfWeekEntity.save();
       dayOfWeekEntities.push(dayOfWeekEntity);
     }
@@ -203,8 +233,16 @@ export async function updateAlarm(
       'alarmState',
     ],
   });
-
-  return alarmInfo;
+  const dayOfWeekArray = alarmInfo.calendarCondition.dayOfWeeks.map(
+    v => v.dayOfWeek
+  );
+  return {
+    ...alarmInfo,
+    calendarCondition: {
+      ...alarmInfo.calendarCondition,
+      dayOfWeeks: dayOfWeekArray,
+    },
+  };
 }
 
 export async function deleteAlarm(id: number) {
