@@ -195,7 +195,8 @@ export async function updateAlarm(
   dayOfWeek: number[],
   hour: number,
   minute: number,
-  second: number
+  second: number,
+  categoryIds: number[]
 ) {
   const alarm: Alarm = await Alarm.findOne({
     where: {id: id},
@@ -206,6 +207,22 @@ export async function updateAlarm(
   const alarmState: AlarmState = await AlarmState.findOne({
     where: {alarmId: id},
   });
+
+  const categoryEntities: Category[] = [];
+  for (const category of categoryIds) {
+    const categoryEntity: Category = await Category.findOne({
+      where: {
+        id: category,
+      },
+    });
+    if (!categoryEntity) {
+      throw Error('Category does not exist');
+    }
+    categoryEntities.push(categoryEntity);
+  }
+  alarm.categories = categoryEntities;
+  await alarm.save();
+
   const matchedDayOfWeek: DayOfWeek[] = await DayOfWeek.find({
     where: {alarm: {id: id}},
   });

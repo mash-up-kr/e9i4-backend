@@ -106,6 +106,7 @@ export async function updateAlarm(req: Request, res: Response) {
     const hour: number = req.body.calendarCondition.hour;
     const minute: number = req.body.calendarCondition.minute;
     const second: number = req.body.calendarCondition.second;
+    const categoryIds: number[] = req.body.categoryIds || [];
     if (!description && !isActive && !isHidden && !alarmType) {
       throw Error('Invalid body');
     }
@@ -122,7 +123,8 @@ export async function updateAlarm(req: Request, res: Response) {
       dayOfWeek,
       hour,
       minute,
-      second
+      second,
+      categoryIds
     );
     res.status(200).json({data: alarm});
   } catch (err) {
