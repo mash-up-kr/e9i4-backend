@@ -8,7 +8,7 @@ export async function addAlarm(req: Request, res: Response) {
     const month: number = req.body.alarm.calendarCondition.month;
     const dayOfMonth: number = req.body.alarm.calendarCondition.dayOfMonth;
     const dayOfWeek: number[] =
-      req.body.alarm.calendarCondition.dayOfWeek || [];
+      req.body.alarm.calendarCondition.dayOfWeeks || [];
     const hour: number = req.body.alarm.calendarCondition.hour;
     const minute: number = req.body.alarm.calendarCondition.minute;
     const second: number = req.body.alarm.calendarCondition.second;
