@@ -45,6 +45,9 @@ export class Alarm extends BaseEntity {
   likeCnt: number;
 
   @Column({nullable: true})
+  url: string;
+
+  @Column({nullable: true})
   userId: number;
 
   @OneToMany(() => AlarmScrap, alarmScrap => alarmScrap.alarm)
