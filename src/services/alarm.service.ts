@@ -79,7 +79,13 @@ export async function addAlarm(
       'alarmState',
     ],
   });
-  return alarmInfo;
+  const dayOfWeekArray = alarmInfo.calendarCondition.dayOfWeeks.map(
+    v => v.dayOfWeek
+  );
+  return {
+    ...alarmInfo,
+    calendarCondition: {...calendarCondition, datOfWeeks: dayOfWeekArray},
+  };
 }
 
 export async function getAlarms() {
@@ -203,8 +209,13 @@ export async function updateAlarm(
       'alarmState',
     ],
   });
-
-  return alarmInfo;
+  const dayOfWeekArray = alarmInfo.calendarCondition.dayOfWeeks.map(
+    v => v.dayOfWeek
+  );
+  return {
+    ...alarmInfo,
+    calendarCondition: {...calendarCondition, datOfWeeks: dayOfWeekArray},
+  };
 }
 
 export async function deleteAlarm(id: number) {
