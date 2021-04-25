@@ -152,7 +152,7 @@ export async function toggleLike(req: Request, res: Response) {
     if (!alarmId || !userId) {
       throw Error('Invalid params');
     }
-    const like = await alarmService.toggleLike(alarmId, userId);
+    const like = await alarmService.toggleLike(userId, alarmId);
     res.status(200).json({like});
   } catch (err) {
     res.status(500).send(`Error while toggle like (${err.message})`);
