@@ -10,8 +10,7 @@ const router: Router = express.Router();
 
 router.use('/auth', authRouter);
 router.use('/user', userRouter);
-router.use(jwtMiddleware);
-router.use('/category', categoryRouter);
-router.use('/alarms', alarmRouter);
+router.use('/category', jwtMiddleware, categoryRouter);
+router.use('/alarms', jwtMiddleware, alarmRouter);
 
 export default router;
