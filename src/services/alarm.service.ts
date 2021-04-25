@@ -84,7 +84,10 @@ export async function addAlarm(
   );
   return {
     ...alarmInfo,
-    calendarCondition: {...calendarCondition, datOfWeeks: dayOfWeekArray},
+    calendarCondition: {
+      ...alarmInfo.calendarCondition,
+      dayOfWeeks: dayOfWeekArray,
+    },
   };
 }
 
@@ -98,7 +101,14 @@ export async function getAlarms() {
       'calendarCondition.dayOfWeeks',
     ],
   });
-  return alarms;
+  const newFormatAlarms = alarms.map(v => ({
+    ...v,
+    calendarCondition: {
+      ...v.calendarCondition,
+      dayOfWeeks: v.calendarCondition?.dayOfWeeks.map(v => v.dayOfWeek),
+    },
+  }));
+  return newFormatAlarms;
 }
 
 export async function getMyAlarms(userId: number) {
@@ -115,7 +125,14 @@ export async function getMyAlarms(userId: number) {
       'calendarCondition.dayOfWeeks',
     ],
   });
-  return myAlarms;
+  const newFormatAlarms = myAlarms.map(v => ({
+    ...v,
+    calendarCondition: {
+      ...v.calendarCondition,
+      dayOfWeeks: v.calendarCondition?.dayOfWeeks.map(v => v.dayOfWeek),
+    },
+  }));
+  return newFormatAlarms;
 }
 
 export async function getIndividualAlarm(alarmId: number) {
@@ -129,7 +146,13 @@ export async function getIndividualAlarm(alarmId: number) {
       'calendarCondition.dayOfWeeks',
     ],
   });
-  return alarm;
+  const dayOfWeekArray = alarm.calendarCondition.dayOfWeeks.map(
+    v => v.dayOfWeek
+  );
+  return {
+    ...alarm,
+    calendarCondition: {...alarm.calendarCondition, dayOfWeeks: dayOfWeekArray},
+  };
 }
 
 export async function updateAlarm(
@@ -178,6 +201,7 @@ export async function updateAlarm(
       const dayOfWeekEntity = new DayOfWeek();
       dayOfWeekEntity.dayOfWeek = week;
       dayOfWeekEntity.alarm = alarm;
+      dayOfWeekEntity.calendarCondition = calendarCondition;
       await dayOfWeekEntity.save();
       dayOfWeekEntities.push(dayOfWeekEntity);
     }
@@ -214,7 +238,10 @@ export async function updateAlarm(
   );
   return {
     ...alarmInfo,
-    calendarCondition: {...calendarCondition, datOfWeeks: dayOfWeekArray},
+    calendarCondition: {
+      ...alarmInfo.calendarCondition,
+      dayOfWeeks: dayOfWeekArray,
+    },
   };
 }
 
