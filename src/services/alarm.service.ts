@@ -194,7 +194,7 @@ export async function updateAlarm(
   year: number,
   month: number,
   dayOfMonth: number,
-  dayOfWeek: number[],
+  dayOfWeeks: number[],
   hour: number,
   minute: number,
   second: number,
@@ -235,15 +235,15 @@ export async function updateAlarm(
   let dayOfWeekEntities: DayOfWeek[] = matchedDayOfWeek;
   // Delete dayOfWeek if it exists in DB but not in request array.
   for (const week of matchedDayOfWeek) {
-    if (!dayOfWeek.includes(week.dayOfWeek)) {
+    if (!dayOfWeeks.includes(week.dayOfWeek)) {
       await week.remove();
       dayOfWeekEntities = dayOfWeekEntities.filter(v =>
-        dayOfWeek.includes(v.dayOfWeek)
+        dayOfWeeks.includes(v.dayOfWeek)
       );
     }
   }
   // Create a new dayOfWeek if does not exist existed in DB but in request array.
-  for (const week of dayOfWeek) {
+  for (const week of dayOfWeeks) {
     if (matchedDayOfWeek.findIndex(value => value.dayOfWeek === week) === -1) {
       const dayOfWeekEntity = new DayOfWeek();
       dayOfWeekEntity.dayOfWeek = week;
