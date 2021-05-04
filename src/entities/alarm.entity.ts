@@ -32,7 +32,7 @@ export class Alarm extends BaseEntity {
   @Column({default: 'iguana.ga/alarm/:key'})
   shareUrl: string;
 
-  @Column({default: 'iguana.ga/alarm/:key'})
+  @Column({nullable: true, default: null})
   imageUrl: string;
 
   @Column({default: 0})
