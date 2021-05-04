@@ -105,7 +105,7 @@ export async function updateAlarm(req: Request, res: Response) {
     const year: number = req.body.calendarCondition.year;
     const month: number = req.body.calendarCondition.month;
     const dayOfMonth: number = req.body.calendarCondition.dayOfMonth;
-    const dayOfWeek: number[] = req.body.calendarCondition.dayOfWeek;
+    const dayOfWeeks: number[] = req.body.calendarCondition.dayOfWeeks;
     const hour: number = req.body.calendarCondition.hour;
     const minute: number = req.body.calendarCondition.minute;
     const second: number = req.body.calendarCondition.second;
@@ -123,7 +123,7 @@ export async function updateAlarm(req: Request, res: Response) {
       year,
       month,
       dayOfMonth,
-      dayOfWeek,
+      dayOfWeeks,
       hour,
       minute,
       second,
